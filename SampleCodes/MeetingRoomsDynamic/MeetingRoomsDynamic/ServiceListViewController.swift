@@ -16,31 +16,31 @@ class ServiceListViewController: UITableViewController {
         self.title = branch?.name
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let rowCount = branch?.services?.count else {
             return 0
         }
         return rowCount
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ServiceCell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ServiceCell", for: indexPath)
         
-        guard let service = branch?.services?[indexPath.row] else {
+        guard let service = branch?.services?[(indexPath as NSIndexPath).row] else {
             return cell
         }
         cell.textLabel?.text = service.name
         return cell
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "MeetingRoomSegue" {
-            guard let destination = segue.destinationViewController as? MeetingRoomsListController, selectedIndex = self.tableView.indexPathForSelectedRow?.row , service = branch?.services?[selectedIndex] else {
+            guard let destination = segue.destination as? MeetingRoomsListController, let selectedIndex = (self.tableView.indexPathForSelectedRow as NSIndexPath?)?.row , let service = branch?.services?[selectedIndex] else {
                 return
             }
             destination.service = service

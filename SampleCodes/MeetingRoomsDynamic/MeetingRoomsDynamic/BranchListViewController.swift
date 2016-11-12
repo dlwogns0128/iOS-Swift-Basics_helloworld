@@ -14,21 +14,21 @@ class BranchListViewController: UITableViewController {
         self.title = "지점"
     }
     
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         
         return 1
     }
     
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         
         let rowCount = dataCenter.branches.count
         return rowCount
     }
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("BranchCell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "BranchCell", for: indexPath)
         
-        let branch = dataCenter.branches[indexPath.row]
+        let branch = dataCenter.branches[(indexPath as NSIndexPath).row]
         cell.textLabel?.text = branch.name
         return cell
     }
@@ -47,26 +47,26 @@ class BranchListViewController: UITableViewController {
     }
     */
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         if segue.identifier == "ServiceSegue" {
-            guard let destination = segue.destinationViewController as? ServiceListViewController, selectedIndex = self.tableView.indexPathForSelectedRow?.row else {
+            guard let destination = segue.destination as? ServiceListViewController, let selectedIndex = (self.tableView.indexPathForSelectedRow as NSIndexPath?)?.row else {
                 return
             }
             destination.branch = dataCenter.branches[selectedIndex] as Branch
         }
     }
-    @IBAction func locationTurnOn(sender: AnyObject) {
+    @IBAction func locationTurnOn(_ sender: AnyObject) {
         
-        let locationAlert = UIAlertController(title: "위치 정보 요청", message: "위치 정보를 기반으로 가까운 지점을 자동으로 선택할 수 있습니다. 또는 지도앱에서 지점의 위치 정보를 제공해 드립니다. 선택하신 기능이 계속 제공됩니다. 환경설정에서 제공되는 기능을 변경할 수 있습니다.", preferredStyle: .ActionSheet)
-        let locationAction = UIAlertAction(title: "위치정보 켜기", style: .Default, handler: { (action:UIAlertAction) -> Void in
+        let locationAlert = UIAlertController(title: "위치 정보 요청", message: "위치 정보를 기반으로 가까운 지점을 자동으로 선택할 수 있습니다. 또는 지도앱에서 지점의 위치 정보를 제공해 드립니다. 선택하신 기능이 계속 제공됩니다. 환경설정에서 제공되는 기능을 변경할 수 있습니다.", preferredStyle: .actionSheet)
+        let locationAction = UIAlertAction(title: "위치정보 켜기", style: .default, handler: { (action:UIAlertAction) -> Void in
             print ("위치정보 켜기 선택")
             })
-        let openMapAction = UIAlertAction(title: "지도앱에서 열기", style: .Default, handler: { (action:UIAlertAction) -> Void in
+        let openMapAction = UIAlertAction(title: "지도앱에서 열기", style: .default, handler: { (action:UIAlertAction) -> Void in
             print ("지도앱에서 열기 선택")
         })
         
         locationAlert.addAction(locationAction)
         locationAlert.addAction(openMapAction)
-        self.presentViewController(locationAlert, animated: true, completion: nil)
+        self.present(locationAlert, animated: true, completion: nil)
     }
 }

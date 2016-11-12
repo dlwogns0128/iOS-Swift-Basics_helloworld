@@ -9,25 +9,25 @@
 import UIKit
 
 enum TintColor:Int {
-    case Blue=0, Red, Green, Purple
+    case blue=0, red, green, purple
     
     var color:UIColor {get{
         switch self {
-        case .Blue:
-            return UIColor.blueColor()
-        case .Red:
-            return UIColor.redColor()
-        case .Green:
-            return UIColor.greenColor()
-        case .Purple:
-            return UIColor.purpleColor()
+        case .blue:
+            return UIColor.blue
+        case .red:
+            return UIColor.red
+        case .green:
+            return UIColor.green
+        case .purple:
+            return UIColor.purple
         }
     }}
 }
 let TintColorKey = "TintColor"
 
-func applyTintColor(color:UIColor){
-    guard let window = UIApplication.sharedApplication().keyWindow else {
+func applyTintColor(_ color:UIColor){
+    guard let window = UIApplication.shared.keyWindow else {
         return
     }
     window.tintColor = color
@@ -42,7 +42,7 @@ class TintColorViewController: UIViewController {
 
         // Do any additional setup after loading the view.
         
-        let userDefaultColor = NSUserDefaults.standardUserDefaults().integerForKey(TintColorKey)
+        let userDefaultColor = UserDefaults.standard.integer(forKey: TintColorKey)
         self.tintColorSegment.selectedSegmentIndex = userDefaultColor
     }
 
@@ -51,9 +51,9 @@ class TintColorViewController: UIViewController {
         // Dispose of any resources that can be recreated.
     }
     
-    @IBAction func tintColorChanged(sender: AnyObject) {
+    @IBAction func tintColorChanged(_ sender: AnyObject) {
         let selectedIndex = self.tintColorSegment.selectedSegmentIndex
-        NSUserDefaults.standardUserDefaults().setInteger(selectedIndex, forKey: TintColorKey)
+        UserDefaults.standard.set(selectedIndex, forKey: TintColorKey)
         guard let changedColor = TintColor(rawValue: selectedIndex)?.color else {
             return
         }

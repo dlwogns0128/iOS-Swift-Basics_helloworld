@@ -28,7 +28,7 @@ class ReservationListViewController: UITableViewController {
         // Dispose of any resources that can be recreated.
     }
 
-    func addNewItem(reservation:Reservation) {
+    func addNewItem(_ reservation:Reservation) {
         if (self.meetingRoom?.reservations?.append(reservation)) == nil {
             self.meetingRoom?.reservations = [reservation]
         }
@@ -38,17 +38,17 @@ class ReservationListViewController: UITableViewController {
         
     }
     
-    @IBAction func unwindToReserveList(segue:UIStoryboardSegue) {
+    @IBAction func unwindToReserveList(_ segue:UIStoryboardSegue) {
         print("unwind")
     }
     
     // MARK: - Table view data source
 
-    override func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    override func numberOfSections(in tableView: UITableView) -> Int {
         return 1
     }
 
-    override func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let rowCount = meetingRoom?.reservations?.count else {
             return 0
         }
@@ -56,10 +56,10 @@ class ReservationListViewController: UITableViewController {
     }
 
     
-    override func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCellWithIdentifier("ReservationCell", forIndexPath: indexPath)
+    override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "ReservationCell", for: indexPath)
 
-        guard let reservation = meetingRoom?.reservations?[indexPath.row] else {
+        guard let reservation = meetingRoom?.reservations?[(indexPath as NSIndexPath).row] else {
             return cell
         }
         cell.textLabel?.text = reservation.date.description
